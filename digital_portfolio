@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #151820;
+      --card: #1c2030;
+      --accent: #5ee7c0;
+      --accent2: #7b9cff;
+      --text: #e8eaf0;
+      --muted: #7a8099;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(13,15,20,0.85);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      color: var(--accent);
+      letter-spacing: .02em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--muted);
+      font-size: .875rem; letter-spacing: .05em; text-transform: uppercase;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ---- HERO ---- */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 8rem 4rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 70% 40%, rgba(94,231,192,.08) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 20% 70%, rgba(123,156,255,.07) 0%, transparent 70%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 700px; }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(94,231,192,.12);
+      color: var(--accent);
+      font-size: .8rem; letter-spacing: .1em; text-transform: uppercase;
+      padding: .35rem 1rem; border-radius: 100px;
+      border: 1px solid rgba(94,231,192,.25);
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+    h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      animation: fadeUp .6s .1s ease both;
+    }
+    h1 em { font-style: italic; color: var(--accent); }
+    .hero-sub {
+      margin-top: 1.5rem; font-size: 1.1rem; color: var(--muted); max-width: 520px;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .hero-actions {
+      margin-top: 2.5rem; display: flex; gap: 1rem; flex-wrap: wrap;
+      animation: fadeUp .6s .3s ease both;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .75rem 1.8rem; border-radius: 8px; font-size: .9rem; font-weight: 500;
+      text-decoration: none; transition: all .2s; cursor: pointer; border: none;
+    }
+    .btn-primary {
+      background: var(--accent); color: #0d0f14;
+    }
+    .btn-primary:hover { background: #7fffd4; transform: translateY(-2px); }
+    .btn-outline {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* ---- SECTION LAYOUT ---- */
+    section { padding: 5rem 4rem; max-width: 1100px; margin: 0 auto; }
+    .section-label {
+      font-size: .75rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .75rem; font-weight: 500;
+    }
+    h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.15; margin-bottom: 2.5rem;
+    }
+
+    /* ---- ABOUT ---- */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;
+    }
+    .about-text p { color: var(--muted); margin-bottom: 1rem; }
+    .about-meta { display: flex; flex-direction: column; gap: 1.25rem; }
+    .meta-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.2rem 1.5rem;
+    }
+    .meta-card .label { font-size: .75rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent); margin-bottom: .3rem; }
+    .meta-card .value { font-size: .95rem; color: var(--text); font-weight: 500; }
+    .meta-card .sub { font-size: .82rem; color: var(--muted); }
+
+    /* ---- SKILLS ---- */
+    .skills-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem;
+    }
+    .skill-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem;
+      transition: border-color .2s, transform .2s;
+    }
+    .skill-card:hover { border-color: rgba(94,231,192,.35); transform: translateY(-3px); }
+    .skill-icon { font-size: 1.6rem; margin-bottom: .75rem; }
+    .skill-title { font-weight: 600; font-size: .95rem; margin-bottom: .5rem; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .tag {
+      background: rgba(255,255,255,.05);
+      border: 1px solid var(--border);
+      border-radius: 100px; padding: .2rem .7rem;
+      font-size: .75rem; color: var(--muted);
+    }
+
+    /* ---- EDUCATION ---- */
+    .edu-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .edu-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      transition: border-color .2s;
+    }
+    .edu-card:hover { border-color: rgba(94,231,192,.3); }
+    .edu-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(94,231,192,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .edu-body .inst { font-size: .82rem; color: var(--muted); margin-bottom: .2rem; }
+    .edu-body .degree { font-weight: 600; margin-bottom: .3rem; }
+    .edu-body .gpa { 
+      display: inline-block; background: rgba(94,231,192,.12); 
+      color: var(--accent); border-radius: 100px; padding: .15rem .7rem;
+      font-size: .8rem; font-weight: 500; margin-bottom: .6rem;
+    }
+    .edu-body .courses { font-size: .82rem; color: var(--muted); }
+
+    /* ---- EXPERIENCE ---- */
+    .exp-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.8rem;
+      position: relative; overflow: hidden;
+    }
+    .exp-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+      background: linear-gradient(to bottom, var(--accent), var(--accent2));
+    }
+    .exp-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+    .exp-role { font-weight: 600; font-size: 1.05rem; }
+    .exp-company { color: var(--accent); }
+    .exp-period {
+      background: rgba(255,255,255,.05); border: 1px solid var(--border);
+      border-radius: 100px; padding: .2rem .85rem; font-size: .8rem; color: var(--muted);
+    }
+    .exp-duties { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+    .exp-duties li { display: flex; gap: .75rem; font-size: .9rem; color: var(--muted); }
+    .exp-duties li::before { content: '→'; color: var(--accent); flex-shrink: 0; }
+
+    /* ---- ACHIEVEMENTS ---- */
+    .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 1.25rem; }
+    .ach-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.4rem; text-align: center;
+      transition: border-color .2s, transform .2s;
+    }
+    .ach-card:hover { border-color: rgba(123,156,255,.35); transform: translateY(-3px); }
+    .ach-icon { font-size: 2rem; margin-bottom: .75rem; }
+    .ach-name { font-weight: 600; font-size: .95rem; }
+
+    /* ---- CCAs ---- */
+    .cca-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+    .cca-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      transition: border-color .2s;
+    }
+    .cca-card:hover { border-color: rgba(94,231,192,.3); }
+    .cca-card .cca-title { font-weight: 600; margin-bottom: .5rem; font-size: 1rem; }
+    .cca-card p { font-size: .88rem; color: var(--muted); }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 4rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem; max-width: 1100px; margin: 0 auto;
+    }
+    footer .copy { font-size: .82rem; color: var(--muted); }
+    footer .built { font-size: .82rem; color: var(--muted); }
+
+    /* ---- DIVIDER ---- */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 0 4rem; }
+
+    /* ---- ANIMATIONS ---- */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .fade-in {
+      opacity: 0; transform: translateY(20px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1rem; }
+      #hero { padding: 7rem 1.5rem 3rem; }
+      section { padding: 3.5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .cca-grid { grid-template-columns: 1fr; }
+      footer { padding: 2rem 1.5rem; }
+      .divider { margin: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#achievements">Achievements</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-tag">IT Student · Singapore</span>
+    <h1>Building digital solutions<br>with <em>purpose.</em></h1>
+    <p class="hero-sub">
+      A passionate IT student at Nanyang Polytechnic with a strong foundation in software development, web technologies, and a drive for continuous learning.
+    </p>
+    <div class="hero-actions">
+      <a href="#about" class="btn btn-primary">Get to know me</a>
+      <a href="#experience" class="btn btn-outline">View Experience</a>
+    </div>
+  </div>
+</div>
+
+<hr class="divider"/>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">Introduction</div>
+  <h2>Who I Am</h2>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>
+        I have a strong foundation in software development and web technologies, with experience collaborating in agile teams and delivering user-focused digital solutions.
+      </p>
+      <p>
+        Proficient in JavaScript, Python, and modern web frameworks, I bring a strong passion for problem-solving and continuous learning to every project I work on.
+      </p>
+      <p>
+        Currently pursuing a Diploma in Information Technology at Nanyang Polytechnic, I'm always looking to grow my skills and take on new challenges in the ever-evolving world of tech.
+      </p>
+    </div>
+    <div class="about-meta">
+      <div class="meta-card">
+        <div class="label">Institution</div>
+        <div class="value">Nanyang Polytechnic</div>
+        <div class="sub">Diploma in Information Technology</div>
+      </div>
+      <div class="meta-card">
+        <div class="label">GPA</div>
+        <div class="value">3.8 / 4.0</div>
+        <div class="sub">Dean's List Achiever</div>
+      </div>
+      <div class="meta-card">
+        <div class="label">Location</div>
+        <div class="value">Singapore 🇸🇬</div>
+        <div class="sub">Open to opportunities</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Capabilities</div>
+  <h2>Skills Summary</h2>
+  <div class="skills-grid fade-in">
+    <div class="skill-card">
+      <div class="skill-icon">🐍</div>
+      <div class="skill-title">Languages</div>
+      <div class="skill-tags">
+        <span class="tag">Python</span>
+        <span class="tag">HTML</span>
+        <span class="tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🛠️</div>
+      <div class="skill-title">Software Development</div>
+      <div class="skill-tags">
+        <span class="tag">OOP</span>
+        <span class="tag">Agile</span>
+        <span class="tag">React</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">🗄️</div>
+      <div class="skill-title">Databases</div>
+      <div class="skill-tags">
+        <span class="tag">SQL</span>
+        <span class="tag">NoSQL</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">☁️</div>
+      <div class="skill-title">Cloud Computing</div>
+      <div class="skill-tags">
+        <span class="tag">Cloud Fundamentals</span>
+      </div>
+    </div>
+    <div class="skill-card">
+      <div class="skill-icon">📊</div>
+      <div class="skill-title">Computer Science</div>
+      <div class="skill-tags">
+        <span class="tag">Data Structures</span>
+        <span class="tag">Algorithms</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label">Academic Background</div>
+  <h2>Education</h2>
+  <div class="edu-list fade-in">
+    <div class="edu-card">
+      <div class="edu-icon">🎓</div>
+      <div class="edu-body">
+        <div class="inst">Nanyang Polytechnic, Singapore</div>
+        <div class="degree">Diploma in Information Technology</div>
+        <div class="gpa">GPA: 3.8</div>
+        <div class="courses">Relevant Coursework: AI-Enabled Mobile Application Development · Blockchain Development · Immersive Experience Development · Digital User Experience Design</div>
+      </div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-icon">📚</div>
+      <div class="edu-body">
+        <div class="inst">Serangoon Garden Secondary School</div>
+        <div class="degree">O Level Certificate</div>
+        <div class="gpa">L1R5: 17 Points — Graduated 2024</div>
+        <div class="courses">Computing Subject taken at Secondary School level</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-label">Professional</div>
+  <h2>Work Experience</h2>
+  <div class="exp-card fade-in">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Software Engineering Intern</div>
+        <div class="exp-company">DBS Bank</div>
+      </div>
+      <div class="exp-period">Sep – Oct 2027</div>
+    </div>
+    <ul class="exp-duties">
+      <li>Assisted in developing and maintaining web applications using JavaScript and React</li>
+      <li>Conducted testing and debugging to identify and resolve performance issues</li>
+      <li>Participated in Agile sprint planning, daily stand-ups, and code reviews</li>
+    </ul>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-label">Recognition</div>
+  <h2>Certifications & Awards</h2>
+  <div class="ach-grid fade-in">
+    <div class="ach-card">
+      <div class="ach-icon">🐍</div>
+      <div class="ach-name">Python Programming Certification</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">🏆</div>
+      <div class="ach-name">NYP Director's List</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">💡</div>
+      <div class="ach-name">Hackathon — Top 10 Finalist</div>
+    </div>
+  </div>
+
+  <div style="margin-top: 3rem;">
+    <div class="section-label">Community</div>
+    <h2>CCAs & Interests</h2>
+    <div class="cca-grid fade-in">
+      <div class="cca-card">
+        <div class="cca-title">🖥️ NYP IT Club — EXCO Member</div>
+        <p>Organised events such as orientation for new students, led event planning discussions, delegated responsibilities, and ensured smooth event execution. Collaborated with committee members to increase student engagement and participation.</p>
+      </div>
+      <div class="cca-card">
+        <div class="cca-title">⚡ Hackathons & Coding Competitions</div>
+        <p>Actively participates in hackathons and coding competitions, pushing the boundaries of problem-solving under pressure and building practical skills in real-world scenarios.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+<footer>
+  <span class="copy">© 2025 — IT Student Portfolio. All rights reserved.</span>
+  <span class="built">Built with HTML, CSS & JavaScript</span>
+</footer>
+
+<script>
+  // Scroll-triggered fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
